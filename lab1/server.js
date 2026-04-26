@@ -24,7 +24,16 @@ app.use((req, res, next) => {
 
 //--------------
 app.get("/students", (req, res) => {
-    res.status(200).json(students);
+    const result = students.map(student => ({
+        ...student,
+        links: [
+            { rel: "self", href: `/students/${student.id}` },
+            { rel: "update", href: `/students/${student.id}` },
+            { rel: "delete", href: `/students/${student.id}` }
+        ]
+    }));
+
+    res.status(200).json(result);
 });
 //-------------
 app.get("/students/:id", (req, res) => {
